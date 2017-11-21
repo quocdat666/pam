@@ -1,12 +1,12 @@
-@(adminList: io.ebean.PagedList[AdminEntity], totalRecord: Int, currentRecord: Int, maxPageSize: Int)
+@(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], currentRecord: Int, filter: String)
 
 @main("PAM - Admin list") {
     <table width="98%" align="center">
         <tbody>
             <tr>
                 <td>
-                @helper.form(routes.ApplicationController.searchAdminList(), 'method -> "POST") {
-                    @views.html.admin.search_panel()
+                @helper.form(routes.ApplicationController.searchAdminList()) {
+                    @views.html.admin.search_panel(searchForm)
                 }
                 </td>
             </tr>
@@ -16,7 +16,7 @@
                 </td>
             </tr>
             <tr>
-                <td>@views.html.admin.list_panel(adminList, totalRecord, currentRecord, maxPageSize, "welcome")</td>
+                <td id = "list-detail">@views.html.admin.list_panel(adminList, currentRecord, filter)</td>
             </tr>
         </tbody>
     </table>

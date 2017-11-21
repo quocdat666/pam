@@ -1,3 +1,5 @@
+@(searchForm: Form[AdminEntity])
+
 @import helper._
 
 <div id="search_content" class="modal-content">
@@ -6,11 +8,11 @@
         <tbody>
             <tr>
                 <td><span>@Messages("admin.list.001")</span></td>
-                <td width="350px"><input type="text" class="input-text" name="adminId" id ="adminId" size="20"></td>
+                <td width="350px"><input type="text" class="input-text" name="adminId" id ="adminId" size="20" value="@searchForm("adminId").value"></td>
                 <td>@Messages("admin.list.006")</td>
                 <td>
                     <select class="input-text" id="activeStatus" name="activeStatus">
-                        <option class="blank" checked>Choose One</option>
+                        <option class="blank" value="">Choose One</option>
                         <option value="1">Enable</option>
                         <option value="2">Disable</option>
                     </select>
@@ -38,19 +40,19 @@
             </tr>
             <tr>
                 <td>@Messages("admin.list.003")</td>
-                <td><input type="text" class="input-text" id="companyName" name="companyName" value="" size="25"></td>
+                <td><input type="text" class="input-text" id="companyName" name="companyName" size="25" value="@searchForm("companyName").value"></td>
                 <td>@Messages("admin.list.008")</td>
-                <td><input type="text" class="input-text" id="username" name="username" value="" size="25"></td>
+                <td><input type="text" class="input-text" id="username" name="username" size="25" value="@searchForm("username").value"></td>
             </tr>
             <tr>
                 <td>@Messages("admin.list.004")</td>
-                <td><input type="text" class="input-text" id="name" name="name" value="" size="25"></td>
+                <td><input type="text" class="input-text" id="name" name="name" size="25" value="@searchForm("name").value"></td>
                 <td>@Messages("admin.list.009")</td>
-                <td><input type="text" class="input-text" id="nameKana" name="nameKana" value="" size="25"></td>
+                <td><input type="text" class="input-text" id="nameKana" name="nameKana" size="25" value="@searchForm("nameKana").value"></td>
             </tr>
             <tr>
                 <td>@Messages("admin.list.005")</td>
-                <td><input type="text" class="input-text" id="email" name="email" value="" size="25"></td>
+                <td><input type="text" class="input-text" id="email" name="email" size="25" value="@searchForm("email").value"></td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
