@@ -4,7 +4,6 @@ import io.ebean.Ebean;
 import io.ebean.EbeanServer;
 import io.ebean.PagedList;
 import io.ebean.Transaction;
-import models.Computer;
 import play.db.ebean.EbeanConfig;
 
 import javax.inject.Inject;

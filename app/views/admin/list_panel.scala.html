@@ -1,0 +1,75 @@
+
+@(adminList: io.ebean.PagedList[AdminEntity], totalRecord: Int, currentRecord: Int, maxPageSize: Int, filter: String)
+
+<div id="search_detail" class="modal-content">
+<table width="100%">
+    <tbody>
+        <tr>
+            <td align="right" height="45px">
+                <div>
+                    <span>@currentRecord - @(currentRecord + maxPageSize - 1) 件／@totalRecord 件</span>
+                    <a><span id="list-navigator-previous">Previous</span></a>
+                    <span id="current-page" class="hidden">@currentRecord</span>
+                    <a><span id="list-navigator-next">Next</span></a>&nbsp;&nbsp;&nbsp;
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <table width="99%" border="1">
+                    <thead>
+                        <tr>
+                            <th align="center">@Messages("admin.list.001")</th>
+                            <th align="center">@Messages("admin.list.006")</th>
+                            <th align="center">@Messages("admin.list.002")</th>
+                            <th align="center">@Messages("admin.list.004")</th>
+                            <th align="center">@Messages("admin.list.009")</th>
+                            <th align="center">@Messages("admin.list.005")</th>
+                            <th align="center">@Messages("admin.list.007")</th>
+                            <th align="center">@Messages("admin.list.012")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        for( pa){
+                        }
+                        <tr>
+                            <td><span>122345</span></td>
+                            <td><span>有効</span></td>
+                            <td><span>社員</span></td>
+                            <td><span>緑茶太郎</span></td>
+                            <td><span>リョクチャ</span></td>
+                            <td><span></span></td>
+                            <td><span>レンタカー</span></td>
+                            <td><span>...</span></td>
+                        </tr>
+                        <tr>
+                            <td><span>xxxxxx</span></td>
+                            <td><span>有効</span></td>
+                            <td><span>ｻﾌﾟﾗｲﾔｰ</span></td>
+                            <td><span>紅茶花子</span></td>
+                            <td><span>コウチャ</span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span>...</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" height="45px"><div align="center"><span>略（@maxPageSize 件並べる）</span></div></td>
+        </tr>
+        <tr>
+            <td align="right" height="45px">
+                <div>
+                    <span>@currentRecord - @(currentRecord + maxPageSize - 1) 件／@totalRecord 件</span>
+                    <a><span id="list-navigator-previous">Previous</span></a>
+                    <span id="current-page" class="hidden">@currentRecord</span>
+                    <a><span id="list-navigator-next">Next</span></a>&nbsp;&nbsp;&nbsp;
+                    <input type="hidden" value="@filter">
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>

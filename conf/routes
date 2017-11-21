@@ -3,7 +3,9 @@
 # ~~~~
 
 # Default path will just redirect to the computer list
-GET     /                               controllers.ApplicationController.index
+GET     /                              controllers.ApplicationController.index
+GET     /adminlist                     controllers.ApplicationController.allAdminList
+POST    /adminlist                     controllers.ApplicationController.searchAdminList
 
 GET     /editPrinter                    controllers.PatternController.editPrinter
 GET     /detonatePrinter                controllers.PatternController.detonatePrinter

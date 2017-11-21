@@ -1,26 +1,33 @@
 html {
-    background: #eee;
+    background:white;
 }
 
-header h1 {
+h1 {
     padding: 0.4em 1.1em;
-    color: white;
+    color: yellow;
     font-weight: normal;
     font-size: 24px;
 }
 
-section#main {
-    position: relative;
-    padding: 5em 2em;
-    border-bottom: 1px solid #ccc;
-    min-height: 600px;
+a {
+    cursor: pointer;
 }
 
-section#main .topRight {
-    position: absolute;
-    right: 20px;
-    top: 70px;
+.header {
+    background: rgba(58,58,58,0.7);
 }
 
+.menu {
+    background: cadetblue;
+    width: 200px;
+}
 
+.main-content {
+    width: 100%;
+    margin-top: 10px;
+}
 
+.input-text {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

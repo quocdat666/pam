@@ -1,5 +1,14 @@
-# Messages
-
-computers.list.title={0,choice,0#No computers|1#One computer|1<{0,number,integer} computers} found
-
+# ADMIN
+admin.list.001=利用者ID
+admin.list.002=区分
+admin.list.003=法人名称
+admin.list.004=氏名
+admin.list.005=メールアドレス
+admin.list.006=状態
+admin.list.007=所属部署
+admin.list.008=事業所名称
+admin.list.009=氏名（カナ）
+admin.list.010=検索する
+admin.list.011=新規登録
+admin.list.012=詳細
 

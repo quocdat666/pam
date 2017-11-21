@@ -1,19 +1,16 @@
 package controllers;
 
-import models.Computer;
-import play.data.Form;
+import models.AdminEntity;
+import play.Logger;
 import play.data.FormFactory;
 import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Results;
 import repository.CompanyRepository;
 import repository.ComputerRepository;
+import router.Routes;
 
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
-import java.util.Map;
-import java.util.concurrent.CompletionStage;
 
 /**
  * Manage a database of computers
@@ -38,6 +35,22 @@ public class ApplicationController extends Controller {
 
     public Result index() {
         return ok("OK");
+    }
+
+    public Result allAdminList() {
+
+        //TODO: load data
+        return ok(views.html.admin.adminList.render(null, 200, 1, 150));
+    }
+
+    public Result searchAdminList() {
+        //TODO
+        return ok(views.html.admin.adminList.render(null, 200, 1, 150));
+    }
+
+    public Result responseAjax() {
+        //TODO
+        return ok(views.html.admin.list_panel.render(null, 200, 1, 150, "abc"));
     }
 
 

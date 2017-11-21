@@ -1,0 +1,24 @@
+@(adminList: io.ebean.PagedList[AdminEntity], totalRecord: Int, currentRecord: Int, maxPageSize: Int)
+
+@main("PAM - Admin list") {
+    <table width="98%" align="center">
+        <tbody>
+            <tr>
+                <td>
+                @helper.form(routes.ApplicationController.searchAdminList(), 'method -> "POST") {
+                    @views.html.admin.search_panel()
+                }
+                </td>
+            </tr>
+            <tr>
+                <td align="center" height="50px">
+                    <button id="createNewAdmin">@Messages("admin.list.011")</button>
+                </td>
+            </tr>
+            <tr>
+                <td>@views.html.admin.list_panel(adminList, totalRecord, currentRecord, maxPageSize, "welcome")</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
