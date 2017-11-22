@@ -2,19 +2,23 @@
 
 @import helper._
 
+@getValue(fieldName: String) = {
+    searchForm(fieldName).value
+}
+
 <div id="search_content" class="modal-content">
     @CSRF.formField
     <table align="center">
         <tbody>
             <tr>
                 <td><span>@Messages("admin.list.001")</span></td>
-                <td width="350px"><input type="text" class="input-text" name="adminId" id ="adminId" size="20" value="@searchForm("adminId").value"></td>
+                <td width="350px"><input type="text" class="input-text" name="adminId" id ="adminId" size="20" value="@getValue("adminId")"></td>
                 <td>@Messages("admin.list.006")</td>
                 <td>
                     <select class="input-text" id="activeStatus" name="activeStatus">
                         <option class="blank" value="">All</option>
-                        <option value="1" @if(searchForm("activeStatus").value == "1") { selected }>Enable</option>
-                        <option value="2" @if(searchForm("activeStatus").value == "2") { selected }>Disable</option>
+                        <option value="1" @if(getValue("activeStatus") == "1") { selected }>Enable</option>
+                        <option value="2" @if(getValue("activeStatus") == "2") { selected }>Disable</option>
                     </select>
                 </td>
             </tr>
@@ -23,36 +27,36 @@
                 <td>
                     <select class="input-text" id="adminType" name="adminType">
                         <option class="blank" value="">All</option>
-                        <option value="1" @if(searchForm("adminType").value == "1") { selected }>Item 01</option>
-                        <option value="2" @if(searchForm("adminType").value == "2") { selected }>Item 02</option>
-                        <option value="3" @if(searchForm("adminType").value == "3") { selected }>Item 03</option>
+                        <option value="1" @if(getValue("adminType") == "1") { selected }>Item 01</option>
+                        <option value="2" @if(getValue("adminType") == "2") { selected }>Item 02</option>
+                        <option value="3" @if(getValue("adminType") == "3") { selected }>Item 03</option>
                     </select>
                 </td>
                 <td>@Messages("admin.list.007")</td>
                 <td>
                     <select class="input-text" id="branch" name="branch">
                         <option class="blank" value="">All</option>
-                        <option value="1" @if(searchForm("branch").value == "1") { selected }>Item 01</option>
-                        <option value="2" @if(searchForm("branch").value == "2") { selected }>Item 02</option>
-                        <option value="3" @if(searchForm("branch").value == "3") { selected }>Item 03</option>
+                        <option value="1" @if(getValue("branch") == "1") { selected }>Item 01</option>
+                        <option value="2" @if(getValue("branch") == "2") { selected }>Item 02</option>
+                        <option value="3" @if(getValue("branch") == "3") { selected }>Item 03</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>@Messages("admin.list.003")</td>
-                <td><input type="text" class="input-text" id="companyName" name="companyName" size="25" value="@searchForm("companyName").value"></td>
+                <td><input type="text" class="input-text" id="companyName" name="companyName" size="25" value="@getValue("companyName")"></td>
                 <td>@Messages("admin.list.008")</td>
-                <td><input type="text" class="input-text" id="username" name="username" size="25" value="@searchForm("username").value"></td>
+                <td><input type="text" class="input-text" id="username" name="username" size="25" value="@getValue("username")"></td>
             </tr>
             <tr>
                 <td>@Messages("admin.list.004")</td>
-                <td><input type="text" class="input-text" id="name" name="name" size="25" value="@searchForm("name").value"></td>
+                <td><input type="text" class="input-text" id="name" name="name" size="25" value="@getValue("name")"></td>
                 <td>@Messages("admin.list.009")</td>
-                <td><input type="text" class="input-text" id="nameKana" name="nameKana" size="25" value="@searchForm("nameKana").value"></td>
+                <td><input type="text" class="input-text" id="nameKana" name="nameKana" size="25" value="@getValue("nameKana")"></td>
             </tr>
             <tr>
                 <td>@Messages("admin.list.005")</td>
-                <td><input type="text" class="input-text" id="email" name="email" size="25" value="@searchForm("email").value"></td>
+                <td><input type="text" class="input-text" id="email" name="email" size="25" value="@getValue("email")"></td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>

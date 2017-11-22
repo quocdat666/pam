@@ -39,7 +39,7 @@ public class ApplicationController extends Controller {
     public Result javascriptRoutes() {
         return ok(
                 JavaScriptReverseRouter.create("jsRoutes",
-                        routes.javascript.ApplicationController.searchAdminListByPage()
+                        routes.javascript.ApplicationController.doAjaxRequestAdminList()
                 )
         ).as("text/javascript");
     }
@@ -56,7 +56,7 @@ public class ApplicationController extends Controller {
         return ok(views.html.admin.adminList.render(form, fetchAdminList(searchInfo), searchInfo));
     }
 
-    public Result searchAdminListByPage(){
+    public Result doAjaxRequestAdminList(){
         Map<String, String[]> parameters = request().body().asFormUrlEncoded();
         String filter = parameters.get("filter")[0];
         AdminSearchInfo searchInfo = Json.fromJson(Json.parse(filter), AdminSearchInfo.class);

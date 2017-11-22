@@ -6,8 +6,8 @@
     @if(pagedList != null){
         <div>
             <span>@(searchInfo.getFirstRow() + 1) - @(searchInfo.getFirstRow() + searchInfo.getPageSize()) 件／@searchInfo.getTotalRow() 件</span>
-            <button id="list-navigator-previous" class="list-navigator-previous" @if(!searchInfo.isMovePreviousPage()){ disabled }>Previous</button>
-            <button id="list-navigator-next" class="list-navigator-next" @if(!searchInfo.isMoveNextPage()){ disabled }>Next</button>&nbsp;&nbsp;&nbsp;
+            <button id="previous" class="navigator-panel" @if(!searchInfo.isMovePreviousPage()){ disabled }>Previous</button>
+            <button id="next" class="navigator-panel" @if(!searchInfo.isMoveNextPage()){ disabled }>Next</button>&nbsp;&nbsp;&nbsp;
             <input id = "filter" type="hidden" value="@searchInfo.toJsonString()">
         </div>
     }
@@ -46,9 +46,7 @@
 <div id="search_detail" class="modal-content">
     <table width="100%">
         <tbody>
-            <tr>
-                <td align="right" height="45px">@navigator_panel</td>
-            </tr>
+            <tr><td align="right" height="45px">@navigator_panel</td></tr>
             <tr>
                 <td align="center">
                     <table width="99%" border="1">
@@ -62,9 +60,7 @@
                     <div align="center"><span>略（@searchInfo.getPageSize() 件並べる）</span></div>
                 </td>
             </tr>
-            <tr>
-                <td align="right" height="45px">@navigator_panel</td>
-            </tr>
+            <tr><td align="right" height="45px">@navigator_panel</td></tr>
         </tbody>
     </table>
 </div>

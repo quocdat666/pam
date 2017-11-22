@@ -1,56 +1,29 @@
 
-$('.list-navigator-next').click(function () {
-    callAjaxEvent('NEXT');
+$('.navigator-panel').click(function () {
+    callAjaxEvent(this.id);
 });
 
-$('.list-navigator-previous').click(function () {
-    callAjaxEvent('PREV');
-});
-
-function callAjaxEvent(action) {
-    var controllerAction = jsRoutes.controllers.ApplicationController.searchAdminListByPage();
-    $.ajax({
-        url: controllerAction.url,
-        method: controllerAction.type,
+function callAjaxEvent(actionType) {
+    jsRoutes.controllers.ApplicationController.doAjaxRequestAdminList.ajax({
         data: {
             csrfToken:  $('input[name=csrfToken]').val(),
-            filter: JSON.stringify(updateFilter(action, $('#filter').val()))
+            filter: JSON.stringify(updateFilterCondition(actionType, $('#filter').val()))
         },
         success: function (data) {
             $('#list-detail').html(data);
 
-            $('.list-navigator-next').click(function () {
-                callAjaxEvent('NEXT');
-            });
-
-            $('.list-navigator-previous').click(function () {
-                callAjaxEvent('PREV');
+            $('.navigator-panel').click(function () {
+                callAjaxEvent(this.id);
             });
         }
     });
 }
 
-/*
-function sendNavigationPageAjaxRequest(action, controllerAction) {
-    $.ajax({
-        url: controllerAction.url,
-        method: controllerAction.type,
-        data: {
-            csrfToken:  $('input[name=csrfToken]').val(),
-            filter: JSON.stringify(updateFilter(action, $('#filter').val()))
-        },
-        success: function (data) {
-            $('#list-detail').html(data);
-        }
-    });
-}
-*/
-
-function updateFilter(action, filterCondition) {
+function updateFilterCondition(actionType, filterCondition) {
     var obj = jQuery.parseJSON(filterCondition);
-    if(action == 'NEXT'){
+    if(actionType == 'next'){
        obj.firstRow += obj.maxRow;
-    } else if(action == 'PREV'){
+    } else if(action == 'previous'){
         obj.firstRow -= obj.maxRow;
     }
     return obj;
