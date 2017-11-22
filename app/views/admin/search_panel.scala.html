@@ -12,9 +12,9 @@
                 <td>@Messages("admin.list.006")</td>
                 <td>
                     <select class="input-text" id="activeStatus" name="activeStatus">
-                        <option class="blank" value="">Choose One</option>
-                        <option value="1">Enable</option>
-                        <option value="2">Disable</option>
+                        <option class="blank" value="">All</option>
+                        <option value="1" @if(searchForm("activeStatus").value == "1") { selected }>Enable</option>
+                        <option value="2" @if(searchForm("activeStatus").value == "2") { selected }>Disable</option>
                     </select>
                 </td>
             </tr>
@@ -22,19 +22,19 @@
                 <td>@Messages("admin.list.002")</td>
                 <td>
                     <select class="input-text" id="adminType" name="adminType">
-                        <option class="blank" value="">Choose One</option>
-                        <option value="1">Item 01</option>
-                        <option value="2">Item 02</option>
-                        <option value="3">Item 03</option>
+                        <option class="blank" value="">All</option>
+                        <option value="1" @if(searchForm("adminType").value == "1") { selected }>Item 01</option>
+                        <option value="2" @if(searchForm("adminType").value == "2") { selected }>Item 02</option>
+                        <option value="3" @if(searchForm("adminType").value == "3") { selected }>Item 03</option>
                     </select>
                 </td>
                 <td>@Messages("admin.list.007")</td>
                 <td>
                     <select class="input-text" id="branch" name="branch">
-                        <option class="blank" value="">Choose One</option>
-                        <option value="1">Item 01</option>
-                        <option value="2">Item 02</option>
-                        <option value="3">Item 03</option>
+                        <option class="blank" value="">All</option>
+                        <option value="1" @if(searchForm("branch").value == "1") { selected }>Item 01</option>
+                        <option value="2" @if(searchForm("branch").value == "2") { selected }>Item 02</option>
+                        <option value="3" @if(searchForm("branch").value == "3") { selected }>Item 03</option>
                     </select>
                 </td>
             </tr>

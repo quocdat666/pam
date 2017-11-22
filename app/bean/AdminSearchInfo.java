@@ -1,13 +1,11 @@
 package bean;
 
 import models.AdminEntity;
-import org.apache.commons.lang3.StringUtils;
 import play.data.Form;
-import play.libs.Json;
 
 public class AdminSearchInfo extends PagingInfo {
 
-    public static final int MAX_RECORD_PER_PAGE = 3;
+    public static final int MAX_RECORD_PER_PAGE = 4;
 
     private String adminId;
     private String adminType;
@@ -25,51 +23,17 @@ public class AdminSearchInfo extends PagingInfo {
 
     public static AdminSearchInfo parse(Form<AdminEntity> form){
         AdminSearchInfo info = new AdminSearchInfo();
+        //BeanUtils.copyProperties(info, form.get());
 
-        String adminId = form.get().getAdminId();
-        if(!StringUtils.isBlank(adminId)){
-            info.setAdminId(adminId);
-        }
-
-        String adminType = form.get().getAdminType();
-        if(!StringUtils.isBlank(adminType)){
-            info.setAdminType(adminType);
-        }
-
-        String companyName = form.get().getCompanyName();
-        if(!StringUtils.isBlank(companyName)){
-            info.setCompanyName(companyName);
-        }
-
-        String name = form.get().getName();
-        if(!StringUtils.isBlank(name)){
-            info.setName(name);
-        }
-
-        String email = form.get().getEmail();
-        if(!StringUtils.isBlank(email)){
-            info.setEmail(email);
-        }
-
-        String activeStatus = form.get().getActiveStatus();
-        if(!StringUtils.isBlank(activeStatus)){
-            info.setActiveStatus(activeStatus);
-        }
-
-        String branch = form.get().getBranch();
-        if(!StringUtils.isBlank(branch)){
-            info.setBranch(branch);
-        }
-
-        String username = form.get().getUsername();
-        if(!StringUtils.isBlank(username)){
-            info.setUsername(username);
-        }
-
-        String nameKana = form.get().getNameKana();
-        if(!StringUtils.isBlank(nameKana)){
-            info.setNameKana(nameKana);
-        }
+        info.setAdminId(form.get().getAdminId());
+        info.setAdminType(form.get().getAdminType());
+        info.setCompanyName( form.get().getCompanyName());
+        info.setName(form.get().getName());
+        info.setEmail(form.get().getEmail());
+        info.setActiveStatus(form.get().getActiveStatus());
+        info.setBranch(form.get().getBranch());
+        info.setUsername(form.get().getUsername());
+        info.setNameKana(form.get().getNameKana());
 
         return info;
     }
@@ -144,10 +108,6 @@ public class AdminSearchInfo extends PagingInfo {
 
     public void setNameKana(String nameKana) {
         this.nameKana = nameKana;
-    }
-
-    public String toString(){
-        return Json.toJson(this).textValue();
     }
 
 }

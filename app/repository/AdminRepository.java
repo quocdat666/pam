@@ -52,37 +52,37 @@ public class AdminRepository {
         }
 
         String companyName = searchInfo.getCompanyName();
-        if(!StringUtils.isBlank(companyName)){
-            expressionList = expressionList.ieq("companyName", companyName);
+        if(!StringUtils.isEmpty(companyName)){
+            expressionList = expressionList.eq("companyName", companyName);
         }
 
         String name = searchInfo.getName();
-        if(!StringUtils.isBlank(name)){
+        if(!StringUtils.isEmpty(name)){
             expressionList = expressionList.eq("name", name);
         }
 
         String email = searchInfo.getEmail();
-        if(!StringUtils.isBlank(email)){
+        if(!StringUtils.isEmpty(email)){
             expressionList = expressionList.eq("email", email);
         }
 
         String activeStatus = searchInfo.getActiveStatus();
-        if(!StringUtils.isBlank(activeStatus)){
+        if(!StringUtils.isEmpty(activeStatus)){
             expressionList = expressionList.eq("activeStatus", activeStatus);
         }
 
         String branch = searchInfo.getBranch();
-        if(!StringUtils.isBlank(branch)){
+        if(!StringUtils.isEmpty(branch)){
             expressionList = expressionList.eq("branch", branch);
         }
 
         String username = searchInfo.getUsername();
-        if(!StringUtils.isBlank(username)){
+        if(!StringUtils.isEmpty(username)){
             expressionList = expressionList.eq("username", username);
         }
 
         String nameKana = searchInfo.getNameKana();
-        if(!StringUtils.isBlank(nameKana)){
+        if(!StringUtils.isEmpty(nameKana)){
             expressionList = expressionList.eq("nameKana", nameKana);
         }
         return expressionList;

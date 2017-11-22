@@ -1,13 +1,14 @@
-@(pagedList: io.ebean.PagedList[AdminEntity], currentRecord: Int, filter: String)
+@import bean.PagingInfo
+
+@(pagedList: io.ebean.PagedList[AdminEntity], searchInfo: PagingInfo)
 
 @navigator_panel = {
     @if(pagedList != null){
         <div>
-            <span>@(currentRecord + 1) - @(currentRecord + pagedList.getPageSize()) 件／@pagedList.getTotalCount() 件</span>
-            <a><span id="list-navigator-previous">Previous</span></a>
-            <a><span id="list-navigator-next">Next</span></a>&nbsp;&nbsp;&nbsp;
-            <input id = "filter" type="hidden" value="@filter">
-            <input id = "firstRow" type="hidden" value="@currentRecord">
+            <span>@(searchInfo.getFirstRow() + 1) - @(searchInfo.getFirstRow() + searchInfo.getPageSize()) 件／@searchInfo.getTotalRow() 件</span>
+            <button id="list-navigator-previous" class="list-navigator-previous" @if(!searchInfo.isMovePreviousPage()){ disabled }>Previous</button>
+            <button id="list-navigator-next" class="list-navigator-next" @if(!searchInfo.isMoveNextPage()){ disabled }>Next</button>&nbsp;&nbsp;&nbsp;
+            <input id = "filter" type="hidden" value="@searchInfo.toJsonString()">
         </div>
     }
 }
@@ -58,7 +59,7 @@
             </tr>
             <tr>
                 <td align="center" height="45px">
-                    <div align="center"><span>略（@pagedList.getPageSize() 件並べる）</span></div>
+                    <div align="center"><span>略（@searchInfo.getPageSize() 件並べる）</span></div>
                 </td>
             </tr>
             <tr>

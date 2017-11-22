@@ -1,43 +1,60 @@
-/*$('#list-navigator-next').click(function(e) {
-    $.ajax({
-        type : 'POST',
-        //contentType:'application/json',
-        dataType: 'text',
-        url : jsRoutes.controllers.ApplicationController.searchAdminListByPage(),
-        //headers: {'X-CSRF-Token': $('meta[name="csrfToken"]').attr('content')},
-        data : {
-            //CSRF:  $('input[name=csrfToken]').val(),
-            firstRow: $("#firstRow").val()
 
-        },
-        success: function(data) {
-            $('#list-detail').innerHTML = data;
-        }
-    });
-    return false;
-});*/
+$('.list-navigator-next').click(function () {
+    callAjaxEvent('NEXT');
+});
 
-$('#list-navigator-next').click(function(e) {
-    var r = jsRoutes.controllers.ApplicationController;
+$('.list-navigator-previous').click(function () {
+    callAjaxEvent('PREV');
+});
+
+function callAjaxEvent(action) {
+    var controllerAction = jsRoutes.controllers.ApplicationController.searchAdminListByPage();
     $.ajax({
-        contentType:'application/json',
-        dataType: 'text',
-        url: r.url,
-        type: r.type,
+        url: controllerAction.url,
+        method: controllerAction.type,
         data: {
-            //CSRF:  $('input[name=csrfToken]').val(),
-            firstRow: $("#firstRow").val()
-
+            csrfToken:  $('input[name=csrfToken]').val(),
+            filter: JSON.stringify(updateFilter(action, $('#filter').val()))
         },
         success: function (data) {
-            alert('success' + data);
-        },
-        error: function () {
-            alert('error');
+            $('#list-detail').html(data);
+
+            $('.list-navigator-next').click(function () {
+                callAjaxEvent('NEXT');
+            });
+
+            $('.list-navigator-previous').click(function () {
+                callAjaxEvent('PREV');
+            });
         }
     });
-    alert('hhhhhh');
-});
+}
+
+/*
+function sendNavigationPageAjaxRequest(action, controllerAction) {
+    $.ajax({
+        url: controllerAction.url,
+        method: controllerAction.type,
+        data: {
+            csrfToken:  $('input[name=csrfToken]').val(),
+            filter: JSON.stringify(updateFilter(action, $('#filter').val()))
+        },
+        success: function (data) {
+            $('#list-detail').html(data);
+        }
+    });
+}
+*/
+
+function updateFilter(action, filterCondition) {
+    var obj = jQuery.parseJSON(filterCondition);
+    if(action == 'NEXT'){
+       obj.firstRow += obj.maxRow;
+    } else if(action == 'PREV'){
+        obj.firstRow -= obj.maxRow;
+    }
+    return obj;
+}
 
 
 

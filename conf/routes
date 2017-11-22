@@ -6,8 +6,6 @@
 GET     /                              controllers.ApplicationController.index
 GET     /adminlist                     controllers.ApplicationController.viewAdminList
 POST    /adminlist                     controllers.ApplicationController.searchAdminList
-
-+ nocsrf
 POST    /adminlistByAjax               controllers.ApplicationController.searchAdminListByPage
 
 GET     /editPrinter                    controllers.PatternController.editPrinter

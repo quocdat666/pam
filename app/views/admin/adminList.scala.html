@@ -1,4 +1,6 @@
-@(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], currentRecord: Int, filter: String)
+@import bean.PagingInfo
+
+@(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], searchInfo: PagingInfo)
 
 @main("PAM - Admin list") {
     <table width="98%" align="center">
@@ -16,9 +18,11 @@
                 </td>
             </tr>
             <tr>
-                <td id = "list-detail">@views.html.admin.list_panel(adminList, currentRecord, filter)</td>
+                <td id = "list-detail">@views.html.admin.list_panel(adminList, searchInfo)</td>
             </tr>
         </tbody>
     </table>
 }
+
+
 
