@@ -1,7 +1,16 @@
 
 @(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], filter: String)
 
-@main("Orion - Admin list") {
+@cssPaths = {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("lib/font-awesome/css/font-awesome.min.css")">
+}
+
+@jsPaths = {
+    <script type="text/javascript" src='@routes.ApplicationController.javascriptRoutes()'></script>
+    <script type="text/javascript" src='@routes.Assets.at("js/admin.js")'></script>
+}
+
+@main("Orion - Admin list")(cssPaths, jsPaths){
     <table width="98%" align="center">
         <tbody>
             <tr>
