@@ -1,6 +1,5 @@
-@import bean.PagingInfo
-
-@(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], searchInfo: PagingInfo)
+@import bean.AdminSearchInfo
+@(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], searchInfo: AdminSearchInfo)
 
 @main("PAM - Admin list") {
     <table width="98%" align="center">

@@ -3,16 +3,15 @@
 # ~~~~
 
 # Default path will just redirect to the computer list
-GET     /adminlist                              controllers.ApplicationController.viewAdminList
-POST    /adminlist                              controllers.ApplicationController.searchAdminList
-POST    /doAjaxRequestAdminList                 controllers.ApplicationController.doAjaxRequestAdminList
+GET    /searchAdminList                        controllers.ApplicationController.searchAdminList
+GET    /doAjaxRequestAdminList                 controllers.ApplicationController.doAjaxRequestAdminList
 
-GET     /editPrinter                            controllers.PatternController.editPrinter
-GET     /detonatePrinter                        controllers.PatternController.detonatePrinter
-GET     /editAnythingRegex                      controllers.PatternController.editPrinterRegex
+GET    /editPrinter                            controllers.PatternController.editPrinter
+GET    /detonatePrinter                        controllers.PatternController.detonatePrinter
+GET    /editAnythingRegex                      controllers.PatternController.editPrinterRegex
 
-GET     /javascriptRoutes                       controllers.ApplicationController.javascriptRoutes
+GET    /javascriptRoutes                       controllers.ApplicationController.javascriptRoutes
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                           controllers.Assets.at(path="/public", file)
+GET    /assets/*file                           controllers.Assets.at(path="/public", file)
 

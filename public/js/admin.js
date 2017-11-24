@@ -3,11 +3,15 @@ $('.navigator-panel').click(function () {
     callAjaxEvent(this.id);
 });
 
-function callAjaxEvent(actionType) {
-    jsRoutes.controllers.ApplicationController.doAjaxRequestAdminList.ajax({
+function callAjaxEvent(navigateType) {
+    var controllerAction = jsRoutes.controllers.ApplicationController.doAjaxRequestAdminList();
+    $.ajax({
+        url: controllerAction.url,
+        method: controllerAction.type,
         data: {
-            csrfToken:  $('input[name=csrfToken]').val(),
-            filter: JSON.stringify(updateFilterCondition(actionType, $('#filter').val()))
+            //csrfToken:  $('input[name=csrfToken]').val(),
+            filter: $('#filter').val(),
+            page: updatePageIndex(navigateType, $('#page').val())
         },
         success: function (data) {
             $('#list-detail').html(data);
@@ -19,15 +23,6 @@ function callAjaxEvent(actionType) {
     });
 }
 
-function updateFilterCondition(actionType, filterCondition) {
-    var obj = jQuery.parseJSON(filterCondition);
-    if(actionType == 'next'){
-       obj.firstRow += obj.maxRow;
-    } else if(action == 'previous'){
-        obj.firstRow -= obj.maxRow;
-    }
-    return obj;
+function updatePageIndex(navigateType, page) {
+    return (navigateType == 'next') ? ++page : --page;
 }
-
-
-

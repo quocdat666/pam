@@ -25,17 +25,17 @@ public class AdminRepository {
         this.executionContext = executionContext;
     }
 
-    public CompletionStage<PagedList<AdminEntity>> searchAdmin(AdminSearchInfo searchInfo) {
-        return supplyAsync(() -> createAdminEntityQuery(searchInfo).findPagedList(),
+    public CompletionStage<PagedList<AdminEntity>> searchAdmin(AdminSearchInfo searchInfo, int page) {
+        return supplyAsync(() -> createAdminEntityQuery(searchInfo, page).findPagedList(),
                 executionContext);
     }
 
-    private Query<AdminEntity> createAdminEntityQuery(AdminSearchInfo searchInfo){
+    private Query<AdminEntity> createAdminEntityQuery(AdminSearchInfo searchInfo, int page) {
         Query<AdminEntity> adminEntityQuery = ebeanServer.find(AdminEntity.class);
         ExpressionList<AdminEntity> expressionList = createAdminEntityExpressionList(searchInfo, adminEntityQuery);
         return expressionList.orderBy("adminId")
-                .setMaxRows(searchInfo.getMaxRow())
-                .setFirstRow(searchInfo.getFirstRow());
+                .setMaxRows(AdminSearchInfo.MAX_RECORD_PER_PAGE)
+                .setFirstRow(page * AdminSearchInfo.MAX_RECORD_PER_PAGE);
     }
 
     private ExpressionList<AdminEntity> createAdminEntityExpressionList(AdminSearchInfo searchInfo, Query<AdminEntity> adminEntityQuery) {

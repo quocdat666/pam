@@ -2,8 +2,9 @@ package bean;
 
 import models.AdminEntity;
 import play.data.Form;
+import play.libs.Json;
 
-public class AdminSearchInfo extends PagingInfo {
+public class AdminSearchInfo {
 
     public static final int MAX_RECORD_PER_PAGE = 4;
 
@@ -17,13 +18,12 @@ public class AdminSearchInfo extends PagingInfo {
     private String username;
     private String nameKana;
 
-    public AdminSearchInfo(){
-        super(MAX_RECORD_PER_PAGE);
+    public String toJsonString(){
+        return Json.toJson(this).toString();
     }
 
     public static AdminSearchInfo parse(Form<AdminEntity> form){
         AdminSearchInfo info = new AdminSearchInfo();
-        //BeanUtils.copyProperties(info, form.get());
 
         info.setAdminId(form.get().getAdminId());
         info.setAdminType(form.get().getAdminType());

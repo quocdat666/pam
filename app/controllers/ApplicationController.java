@@ -1,9 +1,7 @@
 package controllers;
 
 import bean.AdminSearchInfo;
-import io.ebean.PagedList;
 import models.AdminEntity;
-import org.slf4j.Marker;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -15,7 +13,7 @@ import play.routing.JavaScriptReverseRouter;
 import repository.AdminRepository;
 
 import javax.inject.Inject;
-import java.util.Map;
+import java.util.concurrent.CompletionStage;
 
 public class ApplicationController extends Controller {
 
@@ -32,10 +30,6 @@ public class ApplicationController extends Controller {
         this.adminRepository = adminRepository;
     }
 
-    public Result index() {
-        return ok("OK");
-    }
-
     public Result javascriptRoutes() {
         return ok(
                 JavaScriptReverseRouter.create("jsRoutes",
@@ -44,37 +38,27 @@ public class ApplicationController extends Controller {
         ).as("text/javascript");
     }
 
-    public Result viewAdminList() {
-        Form<AdminEntity> form = formFactory.form(AdminEntity.class);
-        AdminSearchInfo searchInfo = new AdminSearchInfo();
-        return ok(views.html.admin.adminList.render(form, fetchAdminList(searchInfo), searchInfo));
-    }
-
-    public Result searchAdminList() {
+    public CompletionStage<Result> searchAdminList() {
         Form<AdminEntity> form = formFactory.form(AdminEntity.class).bindFromRequest();
         AdminSearchInfo searchInfo = AdminSearchInfo.parse(form);
-        return ok(views.html.admin.adminList.render(form, fetchAdminList(searchInfo), searchInfo));
+        Logger.of("application").debug("FILTER: " + searchInfo.toJsonString());
+
+        return adminRepository.searchAdmin(searchInfo, 0)
+                .thenApplyAsync(e -> ok(views.html.admin.adminList.render(form, e, searchInfo))
+                        , httpExecutionContext.current());
     }
 
-    public Result doAjaxRequestAdminList(){
-        Map<String, String[]> parameters = request().body().asFormUrlEncoded();
-        String filter = parameters.get("filter")[0];
+    public CompletionStage<Result> doAjaxRequestAdminList(){
+        String filter = request().getQueryString("filter");
         AdminSearchInfo searchInfo = Json.fromJson(Json.parse(filter), AdminSearchInfo.class);
-        Logger.of("application").debug("AAA: " + searchInfo.toJsonString());
+        Logger.of("application").debug("FILTER: " + searchInfo.toJsonString());
 
-        return ok(views.html.admin.list_panel.render(fetchAdminList(searchInfo), searchInfo));
-    }
+        String page = request().getQueryString("page");
+        Logger.of("application").debug("PAGE: " + page);
 
-    private PagedList<AdminEntity> fetchAdminList(AdminSearchInfo searchInfo) {
-        PagedList<AdminEntity> pagedList = null;
-        try {
-            pagedList = adminRepository.searchAdmin(searchInfo).toCompletableFuture().get();
-            searchInfo.setTotalRow(pagedList.getTotalCount());
-            searchInfo.setPageSize(pagedList.getList().size());
-        } catch (Exception e) {
-            Logger.of("application").debug(Marker.ANY_MARKER, "Load Admin list error", e);
-        }
-        return pagedList;
+        return adminRepository.searchAdmin(searchInfo, Integer.parseInt(page))
+                .thenApplyAsync(e -> ok(views.html.admin.list_panel.render(e, searchInfo))
+                        , httpExecutionContext.current());
     }
 
 }
