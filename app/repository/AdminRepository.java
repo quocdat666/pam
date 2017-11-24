@@ -3,6 +3,7 @@ package repository;
 import bean.AdminSearchInfo;
 import io.ebean.*;
 import models.AdminEntity;
+import models.AuthorisedUser;
 import org.apache.commons.lang3.StringUtils;
 import play.db.ebean.EbeanConfig;
 
@@ -28,6 +29,8 @@ public class AdminRepository {
     public CompletionStage<PagedList<AdminEntity>> searchAdmin(AdminSearchInfo searchInfo, int page) {
         return supplyAsync(() -> createAdminEntityQuery(searchInfo, page).findPagedList(),
                 executionContext);
+
+        ebeanServer.findNative(ABC.class, "").findPagedList();
     }
 
     private Query<AdminEntity> createAdminEntityQuery(AdminSearchInfo searchInfo, int page) {
@@ -43,48 +46,49 @@ public class AdminRepository {
 
         String adminId = searchInfo.getAdminId();
         if(!StringUtils.isEmpty(adminId)){
-            expressionList = expressionList.eq("adminId", adminId);
+            expressionList.eq("adminId", adminId);
         }
 
         String adminType = searchInfo.getAdminType();
         if(!StringUtils.isEmpty(adminType)){
-            expressionList = expressionList.eq("adminType", adminType);
+            expressionList.eq("adminType", adminType);
         }
 
         String companyName = searchInfo.getCompanyName();
         if(!StringUtils.isEmpty(companyName)){
-            expressionList = expressionList.eq("companyName", companyName);
+            expressionList.eq("companyName", companyName);
         }
 
         String name = searchInfo.getName();
         if(!StringUtils.isEmpty(name)){
-            expressionList = expressionList.eq("name", name);
+            expressionList.eq("name", name);
         }
 
         String email = searchInfo.getEmail();
         if(!StringUtils.isEmpty(email)){
-            expressionList = expressionList.eq("email", email);
+            expressionList.eq("email", email);
         }
 
         String activeStatus = searchInfo.getActiveStatus();
         if(!StringUtils.isEmpty(activeStatus)){
-            expressionList = expressionList.eq("activeStatus", activeStatus);
+            expressionList.eq("activeStatus", activeStatus);
         }
 
         String branch = searchInfo.getBranch();
         if(!StringUtils.isEmpty(branch)){
-            expressionList = expressionList.eq("branch", branch);
+            expressionList.eq("branch", branch);
         }
 
         String username = searchInfo.getUsername();
         if(!StringUtils.isEmpty(username)){
-            expressionList = expressionList.eq("username", username);
+            expressionList.eq("username", username);
         }
 
         String nameKana = searchInfo.getNameKana();
         if(!StringUtils.isEmpty(nameKana)){
-            expressionList = expressionList.eq("nameKana", nameKana);
+            expressionList.eq("nameKana", nameKana);
         }
+
         return expressionList;
     }
 

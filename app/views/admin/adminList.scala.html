@@ -1,7 +1,7 @@
-@import bean.AdminSearchInfo
-@(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], searchInfo: AdminSearchInfo)
 
-@main("PAM - Admin list") {
+@(searchForm: Form[AdminEntity], adminList: io.ebean.PagedList[AdminEntity], filter: String)
+
+@main("Orion - Admin list") {
     <table width="98%" align="center">
         <tbody>
             <tr>
@@ -12,12 +12,10 @@
                 </td>
             </tr>
             <tr>
-                <td align="center" height="50px">
-                    <button id="createNewAdmin">@Messages("admin.list.011")</button>
-                </td>
+                <td align="center" height="50px"><button id="createNewAdmin">@Messages("admin.list.011")</button></td>
             </tr>
             <tr>
-                <td id = "list-detail">@views.html.admin.list_panel(adminList, searchInfo)</td>
+                <td id = "list-detail">@views.html.admin.list_panel(adminList, filter)</td>
             </tr>
         </tbody>
     </table>

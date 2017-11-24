@@ -1,17 +1,5 @@
-@import bean.AdminSearchInfo
-@(pagedList: io.ebean.PagedList[AdminEntity], searchInfo: AdminSearchInfo)
 
-@navigator_panel = {
-    @if(pagedList != null){
-        <div>
-            <span>@pagedList.getDisplayXtoYofZ(" 件 "," 件 ")</span>
-            <button id="previous" class="navigator-panel" @if(!pagedList.hasPrev()){ disabled }>Previous</button>
-            <button id="next" class="navigator-panel" @if(!pagedList.hasNext()){ disabled }>Next</button>&nbsp;&nbsp;&nbsp;
-            <input id = "filter" type="hidden" value="@searchInfo.toJsonString()">
-            <input id = "page" type="hidden" value="@pagedList.getPageIndex()">
-        </div>
-    }
-}
+@(pagedList: io.ebean.PagedList[AdminEntity], filter: String)
 
 @table_header = {
     <tr>
@@ -46,7 +34,7 @@
 <div id="search_detail" class="modal-content">
     <table width="100%">
         <tbody>
-            <tr><td align="right" height="45px">@navigator_panel</td></tr>
+            <tr><td align="right" height="45px">@views.html.navigator_panel(pagedList)</td></tr>
             <tr>
                 <td align="center">
                     <table width="99%" border="1">
@@ -60,7 +48,11 @@
                     <div align="center"><span>略（@pagedList.getList.size() 件並べる）</span></div>
                 </td>
             </tr>
-            <tr><td align="right" height="45px">@navigator_panel</td></tr>
+            <tr><td align="right" height="45px">@views.html.navigator_panel(pagedList)</td></tr>
         </tbody>
     </table>
+</div>
+<div>
+    <input id = "filter" type="hidden" value="@filter">
+    <input id = "page" type="hidden" value="@pagedList.getPageIndex()">
 </div>

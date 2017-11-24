@@ -1,0 +1,10 @@
+@import io.ebean.Model
+@(pagedList: io.ebean.PagedList[_ <: Model])
+
+@if(pagedList != null){
+    <div>
+        <span>@pagedList.getDisplayXtoYofZ(" 件 "," 件 ")</span>
+        <button id="previous" class="navigator-panel" @if(!pagedList.hasPrev()){ disabled }>Previous</button>
+        <button id="next" class="navigator-panel" @if(!pagedList.hasNext()){ disabled }>Next</button>&nbsp;&nbsp;&nbsp;
+    </div>
+}

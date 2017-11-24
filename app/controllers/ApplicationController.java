@@ -41,10 +41,11 @@ public class ApplicationController extends Controller {
     public CompletionStage<Result> searchAdminList() {
         Form<AdminEntity> form = formFactory.form(AdminEntity.class).bindFromRequest();
         AdminSearchInfo searchInfo = AdminSearchInfo.parse(form);
+
         Logger.of("application").debug("FILTER: " + searchInfo.toJsonString());
 
         return adminRepository.searchAdmin(searchInfo, 0)
-                .thenApplyAsync(e -> ok(views.html.admin.adminList.render(form, e, searchInfo))
+                .thenApplyAsync(e -> ok(views.html.admin.adminList.render(form, e, searchInfo.toJsonString()))
                         , httpExecutionContext.current());
     }
 
@@ -57,7 +58,7 @@ public class ApplicationController extends Controller {
         Logger.of("application").debug("PAGE: " + page);
 
         return adminRepository.searchAdmin(searchInfo, Integer.parseInt(page))
-                .thenApplyAsync(e -> ok(views.html.admin.list_panel.render(e, searchInfo))
+                .thenApplyAsync(e -> ok(views.html.admin.list_panel.render(e, searchInfo.toJsonString()))
                         , httpExecutionContext.current());
     }
 

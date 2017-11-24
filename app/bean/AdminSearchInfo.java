@@ -6,7 +6,7 @@ import play.libs.Json;
 
 public class AdminSearchInfo {
 
-    public static final int MAX_RECORD_PER_PAGE = 4;
+    public static final int MAX_RECORD_PER_PAGE = 2;
 
     private String adminId;
     private String adminType;

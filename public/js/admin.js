@@ -26,3 +26,7 @@ function callAjaxEvent(navigateType) {
 function updatePageIndex(navigateType, page) {
     return (navigateType == 'next') ? ++page : --page;
 }
+
+function welcome() {
+    alert('hehe');
+}
