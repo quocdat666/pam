@@ -29,8 +29,6 @@ public class AdminRepository {
     public CompletionStage<PagedList<AdminEntity>> searchAdmin(AdminSearchInfo searchInfo, int page) {
         return supplyAsync(() -> createAdminEntityQuery(searchInfo, page).findPagedList(),
                 executionContext);
-
-        ebeanServer.findNative(ABC.class, "").findPagedList();
     }
 
     private Query<AdminEntity> createAdminEntityQuery(AdminSearchInfo searchInfo, int page) {
