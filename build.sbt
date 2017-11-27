@@ -5,7 +5,7 @@ version := "1.0.0-SNAPSHOT"
 scalaVersion := "2.12.2"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
-  
+
 libraryDependencies += guice
 libraryDependencies += jdbc
 libraryDependencies += javaJdbc % Test
@@ -25,5 +25,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "font-awesome" % "4.7.0",
   "org.webjars" % "bootstrap-datepicker" % "1.4.0" exclude("org.webjars", "bootstrap"),
   "be.objectify" %% "deadbolt-java" % "2.6.1",
-  "be.objectify" %% "deadbolt-java-gs" % "2.6.0"
+  "be.objectify" %% "deadbolt-java-gs" % "2.6.0",
+  "commons-beanutils" % "commons-beanutils" % "1.9.3"
 )
+

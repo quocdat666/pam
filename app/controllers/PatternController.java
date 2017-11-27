@@ -26,7 +26,6 @@ import java.util.concurrent.CompletionStage;
 
 /**
  * @author Steve Chaloner (steve@objectify.be)
- *
  */
 
 public class PatternController extends Controller {

@@ -32,7 +32,7 @@ public class BrowserTest extends WithBrowser {
         browser.$("input.primary").click();
 
         assertThat(browser.$("dl.error").size(), equalTo(1));
-        assertThat(browser.$("dl.error label").first().text() ,equalTo("Discontinued date"));
+        assertThat(browser.$("dl.error label").first().text(), equalTo("Discontinued date"));
 
         browser.$("#discontinued").fill().with("xxx");
         browser.$("input.primary").click();

@@ -1,7 +1,10 @@
 package controllers;
 
 import bean.AdminSearchInfo;
+import io.ebean.PagedList;
 import models.AdminEntity;
+import models.AuthorisedUser;
+import models.filter.AuthorisedUserFilter;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -11,8 +14,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.routing.JavaScriptReverseRouter;
 import repository.AdminRepository;
+import service.AuthoriseService;
 
 import javax.inject.Inject;
+import java.util.Arrays;
 import java.util.concurrent.CompletionStage;
 
 public class ApplicationController extends Controller {
@@ -20,6 +25,9 @@ public class ApplicationController extends Controller {
     private final AdminRepository adminRepository;
     private final FormFactory formFactory;
     private final HttpExecutionContext httpExecutionContext;
+
+    @Inject
+    AuthoriseService authoriseService;
 
     @Inject
     public ApplicationController(FormFactory formFactory,
@@ -61,6 +69,14 @@ public class ApplicationController extends Controller {
                 .thenApplyAsync(e -> ok(views.html.admin.list_panel.render(e, searchInfo.toJsonString()))
                         , httpExecutionContext.current());
     }
+         public Result user() {
 
+        Form <AuthorisedUserFilter> userForm = formFactory.form(AuthorisedUserFilter.class).bindFromRequest();
+        AuthorisedUserFilter userFilter = userForm.bindFromRequest().get();
+                 //just for test
+             userFilter.setRoleId(Arrays.asList(1, 2));
+        PagedList<AuthorisedUser> userList = authoriseService.filter(userFilter);
+             return ok(views.html.user.list.render(userList,userForm));
+    }
 }
             

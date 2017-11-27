@@ -3,7 +3,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ModelTest.class,
+//        ModelTest.class,
         FunctionalTest.class,
         BrowserTest.class
 })

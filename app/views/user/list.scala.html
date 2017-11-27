@@ -1,0 +1,80 @@
+@(dataPage: io.ebean.PagedList[AuthorisedUser], userForm: Form[filter.AuthorisedUserFilter])
+@import helper._
+
+@cssPaths = {
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("lib/font-awesome/css/font-awesome.min.css")">
+}
+
+@jsPaths = {
+<script type="text/javascript" src='@routes.ApplicationController.javascriptRoutes()'></script>
+<script type="text/javascript" src='@routes.Assets.at("js/admin.js")'></script>
+}
+
+@main("Orion - Admin list")(cssPaths, jsPaths) {
+<table width="98%" align="center">
+    @helper.form(routes.ApplicationController.user(), 'id -> "userForm") {
+    <tbody>
+    <tr>
+        <td>
+            <div id="search_content" class="modal-content">
+                <table align="center">
+                    <tbody>
+                    <tr>
+                        <td><span>@Messages("admin.list.001")</span></td>
+                        <td>
+                            @helper.inputText(userForm("userName"),'_label -> null)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4" align="center" height="50px">
+                            <input type="submit" value="Search">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" height="50px">
+            <!--<button id="createNewAdmin">@Messages("admin.list.011")</button>-->
+        </td>
+    </tr>
+    <tr>
+        <td><div id="search_detail" class="modal-content">
+            <table width="100%">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User name</th>
+                </tr>
+                </thead>
+                <tbody>
+                @for(user <- dataPage.getList()){
+                <tr>
+                    <td>@user.id</td>
+                    <td>@user.userName</td>
+                </tr>
+                }
+                </tbody>
+            </table>
+        </div></td>
+    </tr>
+    <tr>
+        <td align="right" height="45px">
+            <div>
+                <span>) 件／ 件</span>
+                @if(dataPage.hasPrev()) { <a onclick="pageProcess(@dataPage.getPageIndex+1)"><span id="list-navigator-previous">Previous</span></a>}
+                <span id="current-page" class="hidden">@dataPage.getPageIndex()</span>
+                @if(dataPage.hasNext()){ <a onclick="pageProcess(@(dataPage.getPageIndex+1))"><span id="list-navigator-next">Next</span></a>&nbsp;&nbsp;&nbsp;}
+                @helper.inputText(userForm("pageIndex"),'_label -> null,'id -> "page")
+            </div>
+        </td>
+    </tr>
+    </tbody>
+    }
+</table>
+}
+<script src="/assets/js/paging.js">
+</script>
