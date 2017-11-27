@@ -1,7 +1,6 @@
 package service;
 
 import io.ebean.PagedList;
-import models.filter.DataPage;
 import models.AuthorisedUser;
 import models.filter.AuthorisedUserFilter;
 import repository.AuthorisedRepository;

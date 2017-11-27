@@ -4,7 +4,7 @@ import io.ebean.ExpressionList;
 import io.ebean.Finder;
 import io.ebean.Model;
 import io.ebean.PagedList;
-import models.filter.utils.FilterUtils;
+import models.filter.utils.ExpressionUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +36,7 @@ public abstract class CurdRepository<T extends Model, ID extends Serializable> {
     }
 
     public <E extends PagedList> PagedList<T> filter(E filterEntity) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        ExpressionList exps = FilterUtils.buildQuery(filterEntity, find);
+        ExpressionList exps = ExpressionUtils.buildQuery(filterEntity, find);
 //        int totalRows = exps.findCount();
         //paging
         exps.setFirstRow(filterEntity.getPageIndex()  * filterEntity.getPageSize());

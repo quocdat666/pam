@@ -1,7 +1,7 @@
 package models.filter.query;
 
-import models.filter.query.annotation.GroupFilter;
+import models.filter.query.annotation.GroupExpression;
 
-@GroupFilter(name = "none")
+@GroupExpression(name = "none")
 public class DefaultGroupFilter {
 }

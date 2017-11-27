@@ -3,7 +3,7 @@ import io.ebean.Finder;
 import io.ebean.PagedList;
 import models.AuthorisedUser;
 import models.filter.AuthorisedUserFilter;
-import models.filter.utils.FilterUtils;
+import models.filter.utils.ExpressionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import play.Application;
@@ -27,7 +27,7 @@ public class FilterTest extends WithApplication {
         userFilter.setRoleId(Arrays.asList(1,2));
         userFilter.setPageSize(1);
         try {
-            ExpressionList<AuthorisedUser> exs = FilterUtils.buildQuery(userFilter, new Finder<>(AuthorisedUser.class));
+            ExpressionList<AuthorisedUser> exs = ExpressionUtils.buildQuery(userFilter, new Finder<>(AuthorisedUser.class));
             Assert.assertNotNull(exs);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -1,23 +1,21 @@
 package models.filter;
 
-import io.ebean.PagedList;
-import models.filter.query.annotation.GroupFilter;
-import models.filter.query.annotation.GroupsFilter;
-import models.filter.query.annotation.QueryFilter;
+import models.filter.query.annotation.GroupExpression;
+import models.filter.query.annotation.GroupsExpression;
+import models.filter.query.annotation.Expression;
 import models.filter.query.enu.Operator;
 
 import java.util.List;
-import java.util.concurrent.Future;
 
-@GroupsFilter({@GroupFilter(name = "role", opatator = Operator.OR), @GroupFilter(name = "user")})
+@GroupsExpression({@GroupExpression(name = "role", opatator = Operator.OR), @GroupExpression(name = "user")})
 public class AuthorisedUserFilter extends PagedListImp {
-    @QueryFilter(value = "userName", groupName = "user")
+    @Expression(value = "userName", groupName = "user")
     private String userName;
 
-    @QueryFilter(value = "roles.name", groupName = "role",operator = "eq")
+    @Expression(value = "roles.name", groupName = "role",operator = "eq")
     private String roleName;
 
-    @QueryFilter(value = "roles.id", groupName = "role")
+    @Expression(value = "roles.id", groupName = "role")
     private List<Integer> roleId;
 
     public List<Integer> getRoleId() {

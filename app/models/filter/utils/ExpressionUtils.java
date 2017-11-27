@@ -1,10 +1,10 @@
 package models.filter.utils;
 
 import models.filter.query.DefaultGroupFilter;
-import models.filter.query.annotation.GroupFilter;
+import models.filter.query.annotation.GroupExpression;
 import io.ebean.*;
-import models.filter.query.annotation.GroupsFilter;
-import models.filter.query.annotation.QueryFilter;
+import models.filter.query.annotation.GroupsExpression;
+import models.filter.query.annotation.Expression;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,16 +13,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class FilterUtils {
+public class ExpressionUtils {
 
     public static <E extends PagedList> ExpressionList buildQuery(E searchEntity, Finder<?, ?> finder) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         ExpressionList expressions = finder.query().where();
-        Map<GroupFilter, List<Field>> fieldGroup = buildGroupFilter(searchEntity);
-        for (GroupFilter _groupFilter : fieldGroup.keySet()) {
-            Junction junction = null;
-            junction = invokeJfunction(Junction.class, expressions, _groupFilter.opatator().toString().toLowerCase(), null);
+        Map<GroupExpression, List<Field>> fieldGroup = buildGroupFilter(searchEntity);
+        for (GroupExpression _groupFilter : fieldGroup.keySet()) {
+            final Junction junction = invokeJfunction(Junction.class, expressions, _groupFilter.opatator().toString().toLowerCase(), null);;
             for (Field _field : fieldGroup.get(_groupFilter)) {
-                QueryFilter queryFilter = _field.getAnnotation(QueryFilter.class);
+                Expression queryFilter = _field.getAnnotation(Expression.class);
                 if (queryFilter == null) continue;
                 Object filterVal = PropertyUtils.getProperty(searchEntity, _field.getName());
                 invokeJfunctionProcess(Junction.class, junction, queryFilter.operator(), new Class[]{String.class, Object.class}, queryFilter.value(), filterVal);
@@ -56,16 +55,16 @@ public class FilterUtils {
     }
 
     //Build group conditions
-    private static Map<GroupFilter, List<Field>> buildGroupFilter(Object searchEntity) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private static Map<GroupExpression, List<Field>> buildGroupFilter(Object searchEntity) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Field[] fields = searchEntity.getClass().getDeclaredFields();
-        Map<GroupFilter, List<Field>> fieldGroups = new HashMap<>();
-        GroupsFilter gFilters = searchEntity.getClass().getAnnotation(GroupsFilter.class);
+        Map<GroupExpression, List<Field>> fieldGroups = new HashMap<>();
+        GroupsExpression gFilters = searchEntity.getClass().getAnnotation(GroupsExpression.class);
 
         for (Field field : fields) {
             Object filterVal = PropertyUtils.getProperty(searchEntity, field.getName());
             if (filterVal == null || (filterVal instanceof String && StringUtils.isBlank(filterVal.toString()))) continue;
-            QueryFilter queryFilter = field.getAnnotation(QueryFilter.class);
-            GroupFilter groupFilter = getGrFilterByName(queryFilter.groupName(), gFilters);
+            Expression queryFilter = field.getAnnotation(Expression.class);
+            GroupExpression groupFilter = getGrFilterByName(queryFilter.groupName(), gFilters);
             //ignore field if annotation not exist
             if (queryFilter == null) continue;
             List<Field> _fields = fieldGroups.get(groupFilter);
@@ -76,16 +75,16 @@ public class FilterUtils {
         return fieldGroups;
     }
 
-    private static GroupFilter getGrFilterByName(String name, GroupsFilter groupsFilter) {
-        if (groupsFilter == null) return DefaultGroupFilter.class.getAnnotation(GroupFilter.class);
-        GroupFilter groupFilter = null;
-        for (GroupFilter _groupFilter : groupsFilter.value()) {
+    private static GroupExpression getGrFilterByName(String name, GroupsExpression groupsFilter) {
+        if (groupsFilter == null) return DefaultGroupFilter.class.getAnnotation(GroupExpression.class);
+        GroupExpression groupFilter = null;
+        for (GroupExpression _groupFilter : groupsFilter.value()) {
             if (name.equals(_groupFilter.name())) {
                 groupFilter = _groupFilter;
                 break;
             }
         }
-        return groupFilter == null ? DefaultGroupFilter.class.getAnnotation(GroupFilter.class) : groupFilter;
+        return groupFilter == null ? DefaultGroupFilter.class.getAnnotation(GroupExpression.class) : groupFilter;
     }
 
 
