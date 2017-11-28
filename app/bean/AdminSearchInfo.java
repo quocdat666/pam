@@ -3,31 +3,48 @@ package bean;
 import models.AdminEntity;
 import play.data.Form;
 import play.libs.Json;
+import utils.Condition;
+import utils.Operator;
 
-public class AdminSearchInfo {
+public class AdminSearchInfo implements ExpressionInfo {
 
-    public static final int MAX_RECORD_PER_PAGE = 2;
-
+    @Condition(operator = Operator.EQUAL)
     private String adminId;
+
+    @Condition(operator = Operator.EQUAL)
     private String adminType;
+
+    @Condition(operator = Operator.START_WITH)
     private String companyName;
+
+    @Condition(operator = Operator.END_WITH)
     private String name;
+
+    @Condition(operator = Operator.LIKE)
     private String email;
+
+    @Condition(operator = Operator.EQUAL)
     private String activeStatus;
+
+    @Condition(operator = Operator.NOT_LIKE)
     private String branch;
+
+    @Condition(operator = Operator.LIKE)
     private String username;
+
+    @Condition(operator = Operator.LIKE)
     private String nameKana;
 
-    public String toJsonString(){
+    public String toJsonString() {
         return Json.toJson(this).toString();
     }
 
-    public static AdminSearchInfo parse(Form<AdminEntity> form){
+    public static AdminSearchInfo parse(Form<AdminEntity> form) {
         AdminSearchInfo info = new AdminSearchInfo();
 
         info.setAdminId(form.get().getAdminId());
         info.setAdminType(form.get().getAdminType());
-        info.setCompanyName( form.get().getCompanyName());
+        info.setCompanyName(form.get().getCompanyName());
         info.setName(form.get().getName());
         info.setEmail(form.get().getEmail());
         info.setActiveStatus(form.get().getActiveStatus());
@@ -109,5 +126,4 @@ public class AdminSearchInfo {
     public void setNameKana(String nameKana) {
         this.nameKana = nameKana;
     }
-
 }
