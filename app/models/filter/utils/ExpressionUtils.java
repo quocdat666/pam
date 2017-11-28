@@ -1,5 +1,6 @@
 package models.filter.utils;
 
+import akka.parboiled2.RuleTrace;
 import models.filter.query.DefaultGroupFilter;
 import models.filter.query.annotation.GroupExpression;
 import io.ebean.*;
@@ -12,79 +13,83 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class ExpressionUtils {
 
-    public static <E extends PagedList> ExpressionList buildQuery(E searchEntity, Finder<?, ?> finder) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static <E extends PagedList> ExpressionList buildQuery(E searchEntity, Finder<?, ?> finder) {
         ExpressionList expressions = finder.query().where();
         Map<GroupExpression, List<Field>> fieldGroup = buildGroupFilter(searchEntity);
-        for (GroupExpression _groupFilter : fieldGroup.keySet()) {
-            final Junction junction = invokeJfunction(Junction.class, expressions, _groupFilter.opatator().toString().toLowerCase(), null);;
-            for (Field _field : fieldGroup.get(_groupFilter)) {
-                Expression queryFilter = _field.getAnnotation(Expression.class);
-                if (queryFilter == null) continue;
-                Object filterVal = PropertyUtils.getProperty(searchEntity, _field.getName());
-                invokeJfunctionProcess(Junction.class, junction, queryFilter.operator(), new Class[]{String.class, Object.class}, queryFilter.value(), filterVal);
-            }
-            junction.endJunction();
-        }
 
+        fieldGroup.forEach((group,fields)->{
+            final Junction junction = invokeJfunction(Junction.class, expressions, group.opatator().toString().toLowerCase(), null);;
+            fields.stream().filter(field -> field.getAnnotation(Expression.class)!=null)
+                    .forEach(field -> {
+                        Expression queryFilter = field.getAnnotation(Expression.class);
+                        invokeJfunctionProcess(Junction.class, junction, queryFilter.operator(), new Class[]{String.class, Object.class}, queryFilter.value(), getProperty(searchEntity,field.getName()));
+                    });
+            junction.endJunction();
+        });
         return expressions;
 
     }
 
-    private static void invokeJfunctionProcess(Class clazz, Object obj, String methodName, Class[] types, String fieldName, Object value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private static void invokeJfunctionProcess(Class clazz, Object obj, String methodName, Class[] types, String fieldName, Object value) throws RuntimeException {
         //check type: -> Collection -> Rebuild expression
         if (value instanceof Collection && !"in".equals(methodName)) {
             Collection collection = (Collection) value;
-            for (Object _value : collection) {
-                invokeJfunction(clazz, obj, methodName, types, fieldName, _value);
-            }
+            collection.forEach(_value->invokeJfunction(clazz, obj, methodName, types, fieldName, _value));
         } else invokeJfunction(clazz, obj, methodName, types, fieldName, value);
     }
 
-    private static <T> T invokeJfunction(Class clazz, Object obj, String methodName, Class[] types, Object... params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method methodInvoke = null;
-        if (types == null || types.length < 1) {
-            methodInvoke = clazz.getMethod(methodName);
-            return (T) methodInvoke.invoke(obj, params);
+    private static <T> T invokeJfunction(Class clazz, Object obj, String methodName, Class[] types, Object... params) throws RuntimeException {
+        try {
+            Method methodInvoke = null;
+            methodInvoke=(types==null || types.length<1)? clazz.getMethod(methodName):clazz.getMethod(methodName, types);
+            return (T) methodInvoke.invoke(obj,params);
         }
-        methodInvoke = clazz.getMethod(methodName, types);
-        return (T) methodInvoke.invoke(obj, params);
+        catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
 
     }
 
     //Build group conditions
-    private static Map<GroupExpression, List<Field>> buildGroupFilter(Object searchEntity) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private static Map<GroupExpression, List<Field>> buildGroupFilter(Object searchEntity) throws RuntimeException {
         Field[] fields = searchEntity.getClass().getDeclaredFields();
         Map<GroupExpression, List<Field>> fieldGroups = new HashMap<>();
         GroupsExpression gFilters = searchEntity.getClass().getAnnotation(GroupsExpression.class);
 
-        for (Field field : fields) {
-            Object filterVal = PropertyUtils.getProperty(searchEntity, field.getName());
-            if (filterVal == null || (filterVal instanceof String && StringUtils.isBlank(filterVal.toString()))) continue;
+        Stream.of(fields)
+                .filter(field->getProperty(searchEntity, field.getName())!=null)
+                .filter(field->field.getAnnotation(Expression.class)!=null)
+                .forEach(field->{
             Expression queryFilter = field.getAnnotation(Expression.class);
             GroupExpression groupFilter = getGrFilterByName(queryFilter.groupName(), gFilters);
-            //ignore field if annotation not exist
-            if (queryFilter == null) continue;
             List<Field> _fields = fieldGroups.get(groupFilter);
-            if (_fields == null) _fields = new ArrayList<>();
+            _fields=_fields==null?new ArrayList<>():_fields;
             _fields.add(field);
-            fieldGroups.put(groupFilter, _fields);
-        }
+            fieldGroups.put(getGrFilterByName(queryFilter.groupName(), gFilters), _fields);
+        });
         return fieldGroups;
     }
 
     private static GroupExpression getGrFilterByName(String name, GroupsExpression groupsFilter) {
         if (groupsFilter == null) return DefaultGroupFilter.class.getAnnotation(GroupExpression.class);
-        GroupExpression groupFilter = null;
-        for (GroupExpression _groupFilter : groupsFilter.value()) {
-            if (name.equals(_groupFilter.name())) {
-                groupFilter = _groupFilter;
-                break;
-            }
+        GroupExpression groupFilter= Stream.of(groupsFilter.value())
+                .filter(_groupFilter->name.equals(_groupFilter.name()))
+                .findAny()
+                .orElse(DefaultGroupFilter.class.getAnnotation(GroupExpression.class));
+        return groupFilter;
+
+    }
+
+    private static Object getProperty(Object obj,String name) throws RuntimeException{
+        try{
+            return PropertyUtils.getProperty(obj, name);
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
         }
-        return groupFilter == null ? DefaultGroupFilter.class.getAnnotation(GroupExpression.class) : groupFilter;
     }
 
 
